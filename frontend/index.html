@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Trail Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Audit Trail Dashboard</h1>
+    </header>
+
+    <section class="filter-panel">
+      <div class="filter-group">
+        <label for="tableName">Table Name</label>
+        <select id="tableName">
+          <option value="">All Tables</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label for="startDate">Start Date</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="filter-group">
+        <label for="endDate">End Date</label>
+        <input type="date" id="endDate">
+      </div>
+
+      <button id="filterBtn" class="btn-primary">Filter</button>
+      <button id="clearBtn" class="btn-secondary">Clear</button>
+    </section>
+
+    <section class="results-section">
+      <div class="results-header">
+        <span id="resultCount">0 records found</span>
+      </div>
+
+      <div class="table-container">
+        <table id="auditTable">
+          <thead>
+            <tr>
+              <th></th>
+              <th>ID</th>
+              <th>Table</th>
+              <th>Record ID</th>
+              <th>Action</th>
+              <th>Changed By</th>
+              <th>Changed At</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination">
+        <button id="prevBtn" class="btn-page" disabled>Previous</button>
+        <span id="pageInfo">Page 1 of 1</span>
+        <button id="nextBtn" class="btn-page" disabled>Next</button>
+      </div>
+    </section>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <span>Loading...</span>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
