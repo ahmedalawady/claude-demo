@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Insights</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header class="insights-header">
+      <h1>Audit Insights</h1>
+      <a href="index.html" class="btn-secondary">← Back to Dashboard</a>
+    </header>
+
+    <!-- Stat card: most changed table -->
+    <section class="stat-card-section">
+      <div class="stat-card" id="topTableCard">
+        <div class="stat-label">Most Changed Table</div>
+        <div class="stat-value" id="topTableName">—</div>
+        <div class="stat-sub" id="topTableCount"></div>
+      </div>
+    </section>
+
+    <!-- Charts grid -->
+    <div class="insights-grid">
+
+      <div class="chart-card full-width">
+        <h2>Top Changed Tables</h2>
+        <div class="chart-wrapper">
+          <canvas id="topTablesChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card full-width">
+        <h2>Changes Over Time</h2>
+        <div class="chart-wrapper">
+          <canvas id="overTimeChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Changes by Action Type</h2>
+        <div class="chart-wrapper chart-wrapper--sm">
+          <canvas id="byActionChart"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <h2>Changes by User</h2>
+        <div class="chart-wrapper">
+          <canvas id="byUserChart"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+      <span>Loading insights...</span>
+    </div>
+
+    <div id="error" class="error-banner hidden"></div>
+  </div>
+
+  <script src="audit-insights.js"></script>
+</body>
+</html>

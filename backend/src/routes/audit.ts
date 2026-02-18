@@ -24,6 +24,15 @@ interface TableNameResult extends RowDataPacket {
   table_name: string;
 }
 
+interface InsightRow extends RowDataPacket {
+  table_name?: string;
+  changed_by?: string;
+  action?: string;
+  date?: string;
+  change_count: number;
+  count?: number;
+}
+
 // GET /api/audit-trail - Fetch audit records with filtering and pagination
 router.get('/', async (req: Request, res: Response) => {
   try {
@@ -102,5 +111,72 @@ router.get('/tables', async (_req: Request, res: Response) => {
     res.status(500).json({ error: 'Failed to fetch table names' });
   }
 });
+
+// GET /api/audit-trail/insights/top-tables
+router.get('/insights/top-tables', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.execute<InsightRow[]>(
+      `SELECT table_name, COUNT(*) as change_count
+       FROM audit_log
+       GROUP BY table_name
+       ORDER BY change_count DESC
+       LIMIT 10`
+    )
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching top tables:', error)
+    res.status(500).json({ error: 'Failed to fetch top tables' })
+  }
+})
+
+// GET /api/audit-trail/insights/over-time
+router.get('/insights/over-time', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.execute<InsightRow[]>(
+      `SELECT DATE(changed_at) as date, COUNT(*) as change_count
+       FROM audit_log
+       GROUP BY DATE(changed_at)
+       ORDER BY date ASC
+       LIMIT 90`
+    )
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching over-time data:', error)
+    res.status(500).json({ error: 'Failed to fetch over-time data' })
+  }
+})
+
+// GET /api/audit-trail/insights/by-action
+router.get('/insights/by-action', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.execute<InsightRow[]>(
+      `SELECT action, COUNT(*) as count
+       FROM audit_log
+       GROUP BY action
+       ORDER BY count DESC`
+    )
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching by-action data:', error)
+    res.status(500).json({ error: 'Failed to fetch by-action data' })
+  }
+})
+
+// GET /api/audit-trail/insights/by-user
+router.get('/insights/by-user', async (_req: Request, res: Response) => {
+  try {
+    const [rows] = await pool.execute<InsightRow[]>(
+      `SELECT changed_by, COUNT(*) as change_count
+       FROM audit_log
+       GROUP BY changed_by
+       ORDER BY change_count DESC
+       LIMIT 10`
+    )
+    res.json(rows)
+  } catch (error) {
+    console.error('Error fetching by-user data:', error)
+    res.status(500).json({ error: 'Failed to fetch by-user data' })
+  }
+})
 
 export default router;
